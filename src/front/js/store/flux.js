@@ -1,3 +1,5 @@
+import { Navigate } from "react-router-dom";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -37,11 +39,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 
 				try {
-					const response = await fetch("https://potential-spork-7pvx7qxxxj9c64x-3001.app.github.dev/api/login", requestOptions);
+					const response = await fetch("https://verbose-zebra-g45g9j9wj4r52v6pw-3001.app.github.dev/api/login", requestOptions);
 					const result = await response.json();
+					
+					
 
 					if (response.status === 200) {
 						localStorage.setItem("token", result.access_token)
+						setStore({auth: true})
 						return true
 					}
 				} catch (error) {
@@ -52,7 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getProfile: async () => {
 				let token = localStorage.getItem("token")
 				try {
-					const response = await fetch("https://potential-spork-7pvx7qxxxj9c64x-3001.app.github.dev/api/profile", {
+					const response = await fetch("https://verbose-zebra-g45g9j9wj4r52v6pw-3001.app.github.dev/api/profile", {
 						method: "GET",
 						headers: {
 							"Authorization": `Bearer ${token}`
@@ -70,6 +75,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			logout:()=>{
 				//borrar el token del localStorage
+				localStorage.removeItem("token")
+				setStore({auth: false})
 			},
 			getMessage: async () => {
 				try {

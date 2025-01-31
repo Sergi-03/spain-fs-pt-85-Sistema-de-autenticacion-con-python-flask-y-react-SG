@@ -23,6 +23,27 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
+@api.route("/signup", methods=["POST"])
+def signup():
+    try:
+        email = request.json.get("email")
+        password = request.json.get("password")
+
+        if not email or not password:
+            return jsonify({"msg": "Missing email or password"}), 400
+
+        existing_user = db.session.execute(db.select(User).filter_by(email=email)).scalar_one_or_none()
+        if existing_user:
+            return jsonify({"msg": "User already exists"}), 400
+        
+        new_user = User(email=email, password=password, is_active=True)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"msg": "User created successfully"}), 201
+    except Exception:
+        return jsonify({"msg": "Bad request"}), 400
+
 
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
