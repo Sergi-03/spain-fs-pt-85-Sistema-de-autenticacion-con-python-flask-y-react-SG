@@ -69,9 +69,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(error);
 				};
 			},
-			tokenVerify:()=>{
+			tokenVerify: async () => {
 				//crear un nuevo endpoint que se llame verificacion de token
 				//la peticion en la funcion tokenVerify del front deberia actualizar un estado auth:
+				const token = localStorage.getItem("token")
+
+				if(!token) {
+					setStore({auth: false})
+				    return false
+				}
+
+				try {
+					const response = await fetch ("https://verbose-zebra-g45g9j9wj4r52v6pw-3001.app.github.dev/api/token_verify",{
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`
+						}
+					})
+
+					const result = await response.json()
+
+					if(response.status === 200) {
+						console.log("Valid token", result);
+						
+						setStore({auth: true})
+						return true
+					}
+
+					else{
+						console.log("Invalid Token");
+						
+						setStore({auth: false})
+						return false
+					}
+					
+
+				} catch (error) {
+					console.error("Error verifying Token")
+					setStore({auth: false})
+					return false
+				}
 			},
 			logout:()=>{
 				//borrar el token del localStorage

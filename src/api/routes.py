@@ -60,7 +60,16 @@ def login():
             
     except:
          return jsonify({"msg": "Bad email or password"}), 401
-
+    
+@api.route("/token_verify", methods=["GET"])
+@jwt_required()
+def token_verify():
+    # Access the identity of the current user with get_jwt_identity
+    try:
+        current_user = get_jwt_identity()
+        return jsonify({"msg": "Valid Token", "user": current_user}), 200
+    except Exception as e:
+        return jsonify({"msg": "Invalid Token", "error": str(e)}), 401
 
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
