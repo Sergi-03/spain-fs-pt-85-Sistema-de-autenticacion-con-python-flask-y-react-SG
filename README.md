@@ -39,6 +39,34 @@ El backend de la aplicación expone los siguientes endpoints:
 3. El backend genera un **JWT** que es enviado al frontend, donde se almacena para autenticar futuras solicitudes.
 4. El usuario puede acceder a la información del perfil y cerrar sesión en cualquier momento.
 
+## Uso
+
+### 1. Clona el repositorio
+```bash
+git clone https://github.com/Sergi-03/spain-fs-pt-85-Sistema-de-autenticacion-con-python-flask-y-react-SG.git
+cd spain-fs-pt-85-Sistema-de-autenticacion-con-python-flask-y-react-SG
+```
+
+### 2. Instala dependencias
+```bash
+pipenv install
+pipenv shell
+```
+
+### 3. Inicia el backend
+```bash
+flask run
+```
+
+### 4. Inicia el frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
 
 ## Contacto
 
